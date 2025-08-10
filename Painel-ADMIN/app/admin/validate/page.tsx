@@ -11,7 +11,8 @@ export default function ValidatePage() {
     if (!key.trim()) return;
     setBusy(true);
     try {
-      const data = await Plugin.check(key.trim());
+      // envia no formato esperado pela API do Plugin: { key: string }
+      const data = await Plugin.check({ key: key.trim() });
       setRes(data);
     } catch (e) {
       alert('Erro ao consultar');

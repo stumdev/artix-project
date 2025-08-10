@@ -12,7 +12,9 @@ export default async function KeysPage({ searchParams }: { searchParams: Record<
     <div className="grid gap-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">Keys</h2>
-        <a className="btn btn-primary" href="/admin/keys/new">+ Criar Keys</a>
+        <a className="btn btn-primary text-white" href="/admin/keys/new">
+          + Criar Keys
+        </a>
       </div>
       <Toolbar keygens={keygens} />
       <ClientTable data={data} keygens={keygens} />

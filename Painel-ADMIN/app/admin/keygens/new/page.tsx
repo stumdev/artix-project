@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 export default function NewKeygen() {
   const router = useRouter();
   const [products, setProducts] = useState<any[]>([]);
-  const [form, setForm] = useState({ name:'', prefix:'ARTIX', chunks:5, chunk_size:5, separator:'-', enabled:true, product_id: 0 });
+  const [form, setForm] = useState({ name:'', prefix:'ARTIX', chunks:3, chunk_size:5, separator:'-', enabled:true, product_id: 0 });
   const [busy, setBusy] = useState(false);
   const set = (k:string, v:any) => setForm(prev => ({...prev, [k]: v}));
   useEffect(() => { (async () => setProducts(await Products.list()))(); }, []);

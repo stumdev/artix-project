@@ -16,6 +16,8 @@ export async function api(path: string, opts: RequestInit = {}) {
   return res.json();
 }
 
+type KeyAction = 'ban' | 'unban' | 'reset' | 'revoke' | 'delete';
+
 // ---- Admin: Keys ----
 export const Keys = {
   list: (q: URLSearchParams) => api(`/admin/keys?${q.toString()}`),
@@ -26,6 +28,22 @@ export const Keys = {
   reset: (id: number) => api(`/admin/keys/${id}/reset`, { method: 'POST' }),
   revoke:(id: number) => api(`/admin/keys/${id}/revoke`,{ method: 'POST' }),
   del:   (id: number) => api(`/admin/keys/${id}`,       { method: 'DELETE' }),
+  // NEW: bulk action performed client-side using existing endpoints
+  bulk: async (action: KeyAction, ids: number[]) => {
+    const map: Record<KeyAction, (id: number) => Promise<any>> = {
+      ban: Keys.ban,
+      unban: Keys.unban,
+      reset: Keys.reset,
+      revoke: Keys.revoke,
+      delete: Keys.del,
+    };
+    const fn = map[action];
+    if (!fn) throw new Error('Ação inválida');
+    const results = await Promise.allSettled(ids.map((id) => fn(id)));
+    const ok = results.filter(r => r.status === 'fulfilled').length;
+    const fail = results.length - ok;
+    return { ok, fail, total: results.length };
+  },
 };
 
 // ---- Admin: Products ----
@@ -44,7 +62,8 @@ export const Keygens = {
   del: (id: number) => api(`/admin/keygens/${id}`, { method: 'DELETE' }),
 };
 
-// ---- Admin/Utils: Plugin validation page helper (safe stub) ----
+// ---- Admin/Utils: Plugin validation page helper
 export const Plugin = {
-  check: (payload: { code: string }) => api(`/plugin/check`, { method: 'POST', body: JSON.stringify(payload) }),
+  check: (payload: { key: string }) =>
+    api(`/plugin/check`, { method: 'POST', body: JSON.stringify(payload) }),
 };

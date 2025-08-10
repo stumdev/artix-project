@@ -32,7 +32,7 @@ class Keygen(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(120), unique=True)  # ex: ARTICOS_PRACTICE
     prefix: Mapped[str] = mapped_column(String(16))
-    chunks: Mapped[int] = mapped_column(Integer, default=5)
+    chunks: Mapped[int] = mapped_column(Integer, default=3)
     chunk_size: Mapped[int] = mapped_column(Integer, default=5)
     separator: Mapped[str] = mapped_column(String(2), default='-')
     enabled: Mapped[bool] = mapped_column(Boolean, default=True)

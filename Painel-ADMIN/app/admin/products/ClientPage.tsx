@@ -108,7 +108,7 @@ export default function ProductsClient({ items }: { items: any[] }) {
                 <td className="py-3 align-middle">{p.id}</td>
                 <td className="py-3 align-middle text-slate-400">{p.slug}</td>
                 <td className="py-3 align-middle"><div className="truncate">{p.name}</div></td>
-                <td className="py-3 align-middle">R$ {Number(p.price ?? 0).toFixed(2)}</td>
+                <td className="py-3 align-middle">R$ {((p.price != null ? Number(p.price) : Number(p.price_cents ?? 0) / 100).toFixed(2))}</td>
                 <td className="py-3 align-middle">
                   <StatusBadge value={getActiveFromProduct(p) ? "ACTIVE" : "INACTIVE"} />
                 </td>

@@ -4,3 +4,10 @@ dist/
 build/
 *.log
 .DS_Store
+.env
+*.db
+*.zip
+.venv/
+venv/
+__pycache__/
+*.pyc
